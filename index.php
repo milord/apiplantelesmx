@@ -4,7 +4,7 @@ Mostrar errores
 =====================*/
 ini_set('display_errors', 1);
 ini_set("log_errors", 1);
-ini_set("error_log", "/html/apirest-dinamica/php_error_log");
+ini_set("error_log", "/www/apirestdinamica/php_error_log");
 
 /*=====================
 Requerimientos

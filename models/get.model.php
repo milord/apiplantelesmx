@@ -193,34 +193,34 @@ class GetModel{
     }
 
     /*=================================================
-    Peticiones GET con filtro entre tablas relacionadas
+    Peticiones GET CON filtro entre tablas relacionadas
     ==================================================*/
 
-    static public function getRelData($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt){
+    static public function getRelDataFilter($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt){
 
-    /*=================================================
-    Organizamos los filtros
-    ==================================================*/
+        /*==========================
+        Organizamos los filtros
+        ==========================*/
 
-        $linkToArray = explode(",", $linkTo);
-        $equalToArray = explode ("_", $equalTo);
+        $linkToArray = explode(",",$linkTo);
+        $equalToArray = explode("_",$equalTo);
         $linkToText = "";
 
         if(count($linkToArray)>1){
 
-            foreach ($linkToArray as $key => $value){
+            foreach ($linkToArray as $key => $value) {
 
-                if($key > 0) {
-
-                    $linkToText .= "AND ".$value." = :".$value." ";
+                if($key > 0){
+                    
+                    $linkToText .= "AND ".$value." = :".$value."";
 
                 }
             }
         }
 
-    /*=================================================
-    Organizamos las relaciones
-    ==================================================*/
+        /*==========================
+        Organizamos las relaciones
+        ==========================*/
 
         $relArray = explode(",", $rel);
         $typeArray = explode(",", $type);
@@ -237,61 +237,59 @@ class GetModel{
                 }
 
             }
-        }
+         
+            /*=============================
+            Sin ordenar y sin limitar datos
+            ==============================*/
 
-        /*=============================
-        Sin ordenar y sin limitar datos
-        ==============================*/
+            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] = :$linkToArray[0] $linkToText";
 
-        $sql = "SELECT $select FROM $relArray[0] $innerJoinText $linkToArray[0] = :$linkToArray[0] $linkToText";
+            /*==========================
+            Ordenar datos sin límites
+            ==========================*/
 
-        /*==========================
-        Ordenar datos sin límites
-        ==========================*/
+            if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
 
-        if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
+                $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] = :$linkToArray[0] $linkToText ORDER BY $orderBy $orderMode";
 
-            $sql = "SELECT $select FROM $relArray[0] $innerJoinText $linkToArray[0] = :$linkToArray[0] $linkToText ORDER BY $orderBy $orderMode";
+            }
 
-        }
+            /*==========================
+            Ordenar y limitar datos
+            ==========================*/
 
-        /*==========================
-        Ordenar y limitar datos
-        ==========================*/
+            if ($orderBy != null && $orderMode != null && $startAt != null && $endAt != null) {
 
-        if ($orderBy != null && $orderMode != null && $startAt != null && $endAt != null) {
+                $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] = :$linkToArray[0] $linkToText ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
 
-            $sql = "SELECT $select FROM $relArray[0] $innerJoinText $linkToArray[0] = :$linkToArray[0] $linkToText ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
+            }
 
-        }
+            /*==========================
+            Limitar datos sin ordenar
+            ==========================*/
 
-        /*==========================
-        Limitar datos sin ordenar
-        ==========================*/
+            if ($orderBy == null && $orderMode == null && $startAt != null && $endAt != null) {
 
-        if ($orderBy == null && $orderMode == null && $startAt != null && $endAt != null) {
+                $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] = :$linkToArray[0] $linkToText LIMIT $startAt, $endAt";
 
-            $sql = "SELECT $select FROM $relArray[0] $innerJoinText $linkToArray[0] = :$linkToArray[0] $linkToText LIMIT $startAt, $endAt";
+            }
 
-        }
+            $stmt = Connection::connect()->prepare($sql);
 
-        $stmt = Connection::connect()->prepare($sql);
+            foreach ($linkToArray as $key => $value) {
 
-        foreach ($linkToArray as $key => $value) {
-            
-            $stmt -> bindParam(":".$value, $equalToArray[$key], PDO::PARAM_STR);
-        
-        }
-        
-        $stmt -> execute();
+                $stmt -> bindParam(":".$value, $equalToArray[$key], PDO::PARAM_STR);
 
-        return $stmt -> fetchAll(PDO::FETCH_CLASS);
+            }
 
-    }else{
+            $stmt -> execute();
+
+            return $stmt -> fetchAll(PDO::FETCH_CLASS);
+
+        }else{
 
         return null;
 
+        }
     }
-
-
 }

@@ -43,7 +43,7 @@ class GetController{
     }
 
     /*=================================================
-    Peticiones GET sin filtro entre tablas relacionadas
+    Peticiones GET con filtro entre tablas relacionadas
     ==================================================*/
 
     static public function getRelDataFilter($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt){
