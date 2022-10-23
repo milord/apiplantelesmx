@@ -55,6 +55,58 @@ class GetController{
 
     }
 
+    /*============================================
+    Peticiones GET para el buscador SIN relaciones
+    =============================================*/
+
+    static public function getDataSearch($table, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt){
+
+        $response = GetModel::getDataSearch($table, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt);
+        
+        $return = new GetController();
+        $return -> fncResponse($response);
+
+    }
+
+    /*========================================================
+    Peticiones GET para el BUSCADOR entre tablas relacionadas
+    ========================================================*/
+
+    static public function getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt){
+
+        $response = GetModel::getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt);
+
+        $return = new GetController();
+        $return -> fncResponse($response);
+
+    }
+
+    /*==================================
+    Peticiones GET selección de rangos
+    ===================================*/
+
+    static public function getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo){
+
+        $response = GetModel::getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo);
+
+        $return = new GetController();
+        $return -> fncResponse($response);
+
+    }
+    
+    /*===============================================
+    Peticiones GET selección de tablas relacionadas
+    ==================================================*/
+
+    static public function getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo){
+
+        $response = GetModel::getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo);
+
+        $return = new GetController();
+        $return -> fncResponse($response);
+
+    }
+
     /*============================
     Las respuestas del controlador
     ============================*/
