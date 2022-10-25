@@ -126,7 +126,8 @@ class GetController{
             $json = array(
 
                 'status' => 404,
-                'results' => 'Not found'
+                'results' => 'Not found',
+                'method' => 'get'
 
             );
         }

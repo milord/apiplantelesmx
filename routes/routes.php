@@ -28,6 +28,8 @@ Cuando si se hace una petición a la API
 
 if (count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])) {
 
+    $table = explode("?", $routesArray[1])[0];
+
     /*======================================
     Peticiones GET
     =======================================*/
@@ -44,14 +46,8 @@ if (count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])) {
     
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         
-        $json = array(
+        include "services/post.php";
 
-            'status' => 200,
-            'resultado' => 'Solicitud POST'
-        
-        );
-    
-        echo json_encode($json, http_response_code($json["status"]));
     }
 
     /*======================================
