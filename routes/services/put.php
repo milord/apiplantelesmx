@@ -1,21 +1,33 @@
 <?php
 
 require_once "models/connection.php";
-require_once "controllers/post.controller.php";
+require_once "controllers/put.controller.php";
 
-if(isset($_POST)) {
+if(isset($_GET["id"]) && isset($_GET["nameId"])){
+
+    /*===============================
+    Capturamos datos del formulario
+    ================================*/
+
+    $data = array();
+    parse_str(file_get_contents('php://input'), $data);
 
     /*===================================
     Separar propiedades en un arreglo
     ====================================*/
+
     $columns = array();
 
-    foreach (array_keys($_POST) as $key => $value) {
+    foreach (array_keys($data) as $key => $value) {
 
         array_push($columns, $value);
         
     }
 
+    array_push($columns, $_GET["nameId"]);
+
+    $columns = array_unique($columns);
+    
     /*===============================
     Validar la tabla y las  columnas
     =================================*/
@@ -36,10 +48,10 @@ if(isset($_POST)) {
     }
 
     /*=======================================================================
-    Solicitamos respuesta del controlador para crear datos en cualquier tabla
+    Solicitamos respuesta del controlador para EDITAR datos en cualquier tabla
     =========================================================================*/
 
-    $response = new PostController();
-    $response -> postData($table, $_POST);
+    $response = new PutController();
+    $response -> putData($table, $data, $_GET["$id"], $_GET["$nameId"]);
 
 }
