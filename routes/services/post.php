@@ -35,11 +35,36 @@ if(isset($_POST)) {
 
     }
 
-    /*=======================================================================
-    Solicitamos respuesta del controlador para crear datos en cualquier tabla
-    =========================================================================*/
-
     $response = new PostController();
-    $response -> postData($table, $_POST);
+
+    /*====================================
+    Petición POST para registrar usuario
+    ====================================*/
+
+    if(isset($_GET["register"]) && $_GET["register"] == true) {
+
+        $suffix = $_GET["suffix"] ?? "user";
+
+        $response -> postRegister($table, $_POST, $suffix);
+
+    /*====================================
+    Petición POST para login de usuario
+    ====================================*/
+
+    }else if(isset($_GET["login"]) && $_GET["login"] == true) {
+
+        $suffix = $_GET["suffix"] ?? "user";
+
+        $response -> postLogin($table, $_POST, $suffix);
+    
+    }else{
+
+        /*=======================================================================
+        Solicitamos respuesta del controlador para crear datos en cualquier tabla
+        =========================================================================*/
+            
+        $response -> postData($table, $_POST);
+    
+    }
 
 }
