@@ -2,6 +2,12 @@
 
 require_once "models/get.model.php";
 require_once "models/post.model.php";
+require_once "models/connection.php";
+
+require_once "vendor/autoload.php";
+use Firebase\JWT\JWT;
+
+require_once "models/put.model.php";
 
 class PostController{
 
@@ -60,6 +66,29 @@ class PostController{
             $crypt = crypt($data["password_".$suffix], '$2a$07$azybxcags23425sdg23sdfhsd$');
 
             if($response[0]->{"password_".$suffix} == $crypt){
+
+                $token = Connection::jwt($response[0]->{"id_".$suffix}, $response[0]->{"email_".$suffix});
+                
+                $jwt = JWT::encode($token, "dfhsdfg34dfchs4xgsrsdry46", "HS256");
+
+                /*=============================================
+                Actualizamos en la BD con el token del usuario
+                ===============================================*/
+
+                $data = array(
+
+                    "token_".$suffix => $jwt,
+                    "token_exp".$suffix => $token["exp"]
+
+                );
+
+                $update = PutModel::putData($table, $data, $response[0]->{"id_".$suffix}, "id_".$suffix);
+                
+                if($update["comment"] == "The process was successful") {
+
+
+
+                }
 
             }else{
 
