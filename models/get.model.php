@@ -70,7 +70,6 @@ class GetModel{
 
         }
         
-
         return $stmt -> fetchAll(PDO::FETCH_CLASS);
 
     }
@@ -102,7 +101,7 @@ class GetModel{
 
         }
      
-        $equalToArray = explode ("_", $equalTo);
+        $equalToArray = explode (",", $equalTo);
         $linkToText = "";
 
         if(count($linkToArray)>1){
@@ -117,9 +116,9 @@ class GetModel{
             }
         }
 
-        /*==========================
+        /*=============================
         Sin ordenar y sin limitar datos
-        ==========================*/
+        ==============================*/
 
         $sql = "SELECT $select FROM $table WHERE $linkToArray[0] = :$linkToArray[0] $linkToText";
 
@@ -275,7 +274,7 @@ class GetModel{
         ==========================*/
         
         $linkToArray = explode(",", $linkTo);
-        $equalToArray = explode("_", $equalTo);
+        $equalToArray = explode(",", $equalTo);
         $linkToText = "";
 
         if(count($linkToArray)>1){
@@ -409,7 +408,7 @@ class GetModel{
         }
 
         
-        $searchArray = explode ("_", $search);
+        $searchArray = explode (",", $search);
         $linkToText = "";
 
         if(count($linkToArray)>1){
@@ -493,7 +492,7 @@ class GetModel{
         ==========================*/
 
         $linkToArray = explode(",", $linkTo);
-        $searchArray = explode ("_", $search);
+        $searchArray = explode (",", $search);
         $linkToText = "";
 
         if(count($linkToArray)>1){
