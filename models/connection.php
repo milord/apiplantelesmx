@@ -21,6 +21,27 @@ class Connection{
         return $infoDB;
     }
 
+    /*========= 
+    APIKEY
+    =========*/
+
+    static public function apikey() {
+
+        return "5LTNL?pur^&PJ!YQa178g654123014";  
+  
+    }
+  
+    /*==============
+    Acceso publico
+    ===============*/
+  
+    static public function publicAccess() {
+  
+        $tables = ["courses"];
+  
+        return $tables;
+    }
+
     /*=============================
     Conexión a la base de datos
     ==============================*/
